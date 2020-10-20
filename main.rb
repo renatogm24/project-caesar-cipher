@@ -1,22 +1,15 @@
 def caesar_cipher(phrase,number)
     response = ""
-    phrase.split("").to_a.each do |letter_phrase|
-        is_capitalized = letter_phrase.match(/[A-Z]/)
-        ("a".."z").each_with_index do |letter, index|
-            if index+number.to_i >= 26
-                index2 = index + number.to_i - 26*((index + number.to_i)/26)
-            elsif index+number.to_i < 0
-                index2 = index + number.to_i + 26*((index + number.to_i)/-26)
-            else
-                index2 = index + number.to_i
-            end
-            if letter_phrase.downcase == " "
-                response += " "
-                break
-            elsif letter_phrase.downcase == letter
-                response += is_capitalized ? ("a".."z").to_a[index2].capitalize : ("a".."z").to_a[index2]
-                break
-            end
+    shift = number.to_i
+    alphabet = ("a".."z").to_a
+    phrase.split("").to_a.each do |character|
+        is_capitalized = character.match(/[A-Z]/)
+        if alphabet.include?(character.downcase)
+          index = alphabet.find_index(character.downcase)
+          index_shifted = (index + shift) % 26 
+          response += is_capitalized ? alphabet[index_shifted].capitalize : alphabet[index_shifted]
+        else
+          response += " "
         end
     end
     return response
